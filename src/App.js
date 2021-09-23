@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import {Router} from "./router";
+import React from "react";
+import {Web3ReactProvider} from "@web3-react/core";
+import * as ethers from "ethers";
+import {ToastsProvider} from "./context/ToastsContext";
+import {ThemeContextProvider} from "./context/ThemeProvider";
+
+export const getLibrary = (provider) => {
+  const library = new ethers.providers.Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library
+};
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <ToastsProvider>
+        <ThemeContextProvider>
+          <Router/>
+        </ThemeContextProvider>
+      </ToastsProvider>
+    </Web3ReactProvider>
   );
 }
 
